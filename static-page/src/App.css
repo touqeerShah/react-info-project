@@ -1,0 +1,50 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 5vmin;
+  pointer-events: none; 
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Ensure elements are stacked vertically */
+  align-items: flex-start; /* Align items to the left */
+  justify-content: flex-start; /* Start content at the top */
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding: 57px 27px;
+  background-image: url(./logo.svg);
+  background-repeat: no-repeat;
+  background-position: right 75%;
+
+}
+
+.main-title{
+  margin: 0;
+  font-size: 39px;
+  letter-spacing: -0.05em;
+
+}
+
+.list-item{
+  margin-top: 46px;
+}
+.list-item > li {
+  line-height: 19px;
+  padding-block: 10px;
+}
+.list-item li::marker {
+  color: #61dafb;
+  font-size: 1.9rem;
+}

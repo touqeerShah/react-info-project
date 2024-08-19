@@ -1,0 +1,40 @@
+
+
+.Nav-logo {
+  height: 5vmin;
+  pointer-events: none; 
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, sand
+}
+
+nav{
+  display: flex;
+  align-items: center;
+  background-color: #212221;
+  height: 90px;
+  padding: 30px;
+}
+
+nav > h3 {
+  margin-right: auto;
+  color: #61DAFB;
+}
+
+
+nav > h3, nav > h4 {
+  margin: 0;
+}
+
+nav > h4 {
+  color: #DEEBF8;
+  font-weight: 600;
+  margin-left: auto; /* This moves the h4 to the right corner */
+  padding-right: 100px;
+
+}
