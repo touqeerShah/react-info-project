@@ -1,23 +1,30 @@
 import './ReviewCard.css'
+import PropTypes from 'prop-types';
 
-function ReviewCard() {
-
+function ReviewCard({ img, rating, country, price, comment, isSoldOut }) {
+    let badgeText
+    if (isSoldOut) {
+        badgeText = "SOLD OUT"
+    } else {
+        badgeText = "ONLINE"
+    }
     return (
         <section className="card_section">
             <div className="quote-container">
+                {badgeText && <div className="sold-tag">{badgeText}</div>}
 
-                <div className="star-rating">★★★★★</div>
+                <div className="star-rating">{rating}</div>
 
-                <p className="quote" >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius condimentum orci consectetur suscipit dolor sit </p>
+                <p className="quote" >{comment}</p>
 
                 <div className="reviewer-photo">
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=140&h=140&q=80" width="140" height="140" alt="Photo of reviewer"/>
+                    <img src={img} width="140" height="140" alt="Photo of reviewer" />
                 </div>
 
                 <div className="reviewer-details">
-                    <span className="country">US.</span>
-                    <span className="price"><strong>From $136</strong> / person</span>
-                    
+                    <span className="country">{country}.</span>
+                    <span className="price"><strong>From {price}</strong> / person</span>
+
                 </div>
 
                 <div className="bottom">
@@ -35,4 +42,13 @@ function ReviewCard() {
     )
 }
 
+ReviewCard.propTypes = {
+    country: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    rating: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    comment: PropTypes.string.isRequired,
+    isSoldOut: PropTypes.bool.isRequired,
+
+};
 export default ReviewCard

@@ -1,10 +1,10 @@
 
 .card_section {
-    position: relative;
-    padding: 20px;
-    color: #ffffff;
-    font-family: system-ui;
-
+    /* flex: 1 1 300px; */
+    max-width: 300px;
+    flex: 0 0 auto;         /* ADD */
+    display: flex;          /* ADD */
+    flex-direction: column; /* ADD */
 }
 
   
@@ -41,6 +41,16 @@
   
   .bottom .shape-fill {
     fill: #d61f1f;
+  }
+  
+  .sold-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background-color: rgb(235, 213, 213);
+    padding: 5px 7px;
+    border-radius: 4px;
+    font-weight: bold;
   }
   
   .star-rating {
