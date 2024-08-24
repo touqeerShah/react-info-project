@@ -1,0 +1,141 @@
+/* Filename - App.css */
+/* It containds the Form and Page Styling*/
+
+body {
+  background: #f3f3f3;
+  text-align: center;
+}
+.Prompt {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  transition: transform 0.2s;
+  width: 60%;
+  text-align: left;
+  margin: auto;
+  margin-top: 30px;
+}
+
+
+.meme--text {
+  position: absolute;
+  width: 80%;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 15px 0;
+  padding: 0 5px;
+  font-family: impact, sans-serif;
+  font-size: 2em;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 1px;
+  text-shadow:
+      2px 2px 0 #000,
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      0 2px 0 #000,
+      2px 0 0 #000,
+      0 -2px 0 #000,
+      -2px 0 0 #000,
+      2px 2px 5px #000;
+}
+
+.bottom {
+  bottom: 0;
+}
+
+.top {
+  top: 0;
+  /* color: black; */
+}
+.Meme-Box {
+  position: relative;
+
+}
+.Meme-Box img {
+  border-radius: 15px;
+
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  font-size: x-large;
+  text-align: center;
+  color: #327c35;
+}
+
+fieldset {
+  border: none;
+}
+label {
+  display: block;
+  margin: 10px 0px;
+  font-weight: bold;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.input-group {
+  flex: 1;
+}
+
+button.image-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 10px;
+  margin: 15px 0px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(90deg, #0e63e3, #e7bd9d);
+  width: 100%;
+  font-size: 16px;
+}
+
+button.image-btn img {
+  margin-left: 10px;
+  height: 40px; /* Adjust the size of the image */
+  width: 40px; /* Ensure the image remains small */
+  border-radius: 20%; /* Optionally make the image circular */
+}
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #D5D4D8;
+  text-indent: 5px;
+}
+
+button {
+  padding: 15px;
+  border-radius: 10px;
+  margin: 15px 0px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(90deg, #0e63e3, #e7bd9d);
+  width: 100%;
+  font-size: 16px;
+  
+}
+
+textarea {
+  resize: none;
+  width: 98%;
+  min-height: 100px;
+  max-height: 150px;
+}
