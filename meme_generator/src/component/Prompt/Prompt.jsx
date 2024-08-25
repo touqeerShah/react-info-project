@@ -1,9 +1,10 @@
 import "./Prompt.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import memeLogo from '../../assets/button_image.png'
-import memeData from '../../assets/data/memeData'
+// import memeData from '../../assets/data/memeData'
 
 function Prompt() {
+  const [allMemes, setAllMemes] = useState([])
 
   const [meme, setMeme] = useState({
     topText: "",
@@ -15,6 +16,17 @@ function Prompt() {
   const randomIntegerInRange = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min;
 
+
+
+  useEffect(() => {
+    fetch('https://api.imgflip.com/get_memes')
+      .then(response => response.json())
+      .then(json => {
+        setAllMemes(json)
+        console.log(json)
+      })
+      .catch(error => console.error(error));
+  }, [meme]);
   const handleInputs = (e) => {
     let { value, name } = e.target
     // console.log(value, name)
@@ -27,8 +39,8 @@ function Prompt() {
   const getMemeImage = (e) => {
     e.preventDefault();
 
-    const memeIndex = randomIntegerInRange(0, memeData.data.memes.length);
-    const randomMeme = memeData.data.memes[memeIndex];
+    const memeIndex = randomIntegerInRange(0, allMemes.data.memes.length);
+    const randomMeme = allMemes.data.memes[memeIndex];
     // console.log(memeIndex, memeData.data.memes[memeIndex])
     // setMemeImage(randomMeme.url)
     setMeme(prevMeme => ({
