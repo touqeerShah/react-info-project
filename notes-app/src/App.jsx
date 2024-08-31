@@ -3,8 +3,9 @@ import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
 // import { data } from "./data"
 import Split from "react-split"
-import { nanoid } from "nanoid"
-
+// import { nanoid } from "nanoid"
+import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from "firebase/firestore"
+import { notesCollection, db } from "./utils/firebase"
 /**
  * Challenge: Spend 10-20+ minutes reading through the code
  * and trying to understand how it's currently working. Spend
@@ -16,45 +17,76 @@ import { nanoid } from "nanoid"
 export default function App() {
   // lazy inizatization help to run code and iniaize code only once when we add code like localStorage when every any state change on page the hole page is rerender and run this expensive code again and again.
 
-  const [notes, setNotes] = React.useState(() => JSON.parse(localStorage.getItem("notes")) || [])
+  const [notes, setNotes] = React.useState([])
   const [currentNoteId, setCurrentNoteId] = React.useState(
-    (notes[0] && notes[0].id) || ""
+    ""
   )
+  const [tempNoteText, setTempNoteText] = React.useState("")
+
+  const currentNote =
+    notes.find(note => note.id === currentNoteId)
+    || notes[0]
 
   useEffect(() => {
-
-    localStorage.setItem("notes", JSON.stringify(notes));
-
+    if (!currentNoteId) {
+      setCurrentNoteId(notes[0]?.id)
+    }
   }, [notes])
 
-  function createNewNote() {
+  useEffect(() => {
+    if (currentNote) {
+      setTempNoteText(currentNote?.body)
+    }
+  }, [currentNote])
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(notesCollection, function (snapshot) {
+      // Sync up our local notes array with the snapshot data
+      console.log("snapshot", snapshot.docs)
+      const notesArr = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }))
+      const sortedNotes = [...notesArr].sort((a, b) => b.updateAt - a.updateAt);
+
+      setNotes(sortedNotes)
+    })
+    return unsubscribe
+  }, [])
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (tempNoteText !== currentNote.body) {
+        updateNote(tempNoteText)
+      }
+    }, 500)
+    return () => clearTimeout(timeoutId)
+  }, [tempNoteText])
+  async function createNewNote() {
     const newNote = {
-      id: nanoid(),
       notesName: "Note " + (notes.length + 1),
       createAt: Date.now(),
       updateAt: Date.now(),  // Set updateAt to the creation time
-
       body: "# Type your markdown note's title here"
     }
-    console.log("newNote", newNote)
-    setNotes(prevNotes => [newNote, ...prevNotes])
 
-    setCurrentNoteId(newNote.id)
+    const newNoteRef = await addDoc(notesCollection, newNote)
+
+    setCurrentNoteId(newNoteRef.id)
   }
-  function deleteNote(event, noteId) {
-    event.stopPropagation()
-    const result = notes.filter((note) => note.id !=noteId);
-    console.log("result ",result)
-    setNotes(result)
+  async function deleteNote(noteId) {
+    const docRef = doc(db, "notes", noteId)
+    await deleteDoc(docRef)
+
+
     // Your code here
-}
-  function updateNote(text) {
+  }
+  async function updateNote(text) {
     // this way is do without used sort and updateAt and createAt 
     //   setNotes(oldNotes => {
     //     const newArray = []
     //     for(let i = 0; i < oldNotes.length; i++) {
     //         const oldNote = oldNotes[i]
-    //         if(oldNote.id === currentNoteId) {
+    //         if(oldNot e.id === currentNoteId) {
     //             newArray.unshift({ ...oldNote, body: text })
     //         } else {
     //             newArray.push(oldNote)
@@ -62,33 +94,35 @@ export default function App() {
     //     }
     //     return newArray
     // })
-    const updatedNotes = notes.map(oldNote => {
-      return oldNote.id === currentNoteId
-        ? {
-          ...oldNote,
-          notesName: text.split("\n")[0].replace(/#/g, "").trim(),
-          updateAt: Date.now(),
-          body: text
-        }
-        : oldNote;
-    });
+    // solution two 
+    // const updatedNotes = notes.map(oldNote => {
+    //   return oldNote.id === currentNoteId
+    //     ? {
+    //       ...oldNote,
+    //       notesName: text.split("\n")[0].replace(/#/g, "").trim(),
+    //       updateAt: Date.now(),
+    //       body: text
+    //     }
+    //     : oldNote;
+    // });
 
-    // Then, sort the updated notes array by updateAt in descending order
-    const sortedNotes = [...updatedNotes].sort((a, b) => b.updateAt - a.updateAt);
+    // // Then, sort the updated notes array by updateAt in descending order
+    // const sortedNotes = [...updatedNotes].sort((a, b) => b.updateAt - a.updateAt);
+    // // Finally, update the state with the sorted notes
+    // setNotes(sortedNotes);
 
-    // Finally, update the state with the sorted notes
-    setNotes(sortedNotes);
-    // const sortedNotes = [...notes].sort((a, b) => b.updateAt - a.updateAt);
-    // console.log("sortedNotes",sortedNotes)
-    // setNotes(sortedNotes)
-    // localStorage.setItem("notes", JSON.stringify(notes));
+    // run with firewall
+    const docRef = doc(db, "notes", currentNoteId)
+
+    await setDoc(docRef, {
+      body: text,
+      notesName: text.split("\n")[0].replace(/#/g, "").trim(),
+      updateAt: Date.now()
+    }, { merge: true })
+
   }
 
-  function findCurrentNote() {
-    return notes.find(note => {
-      return note.id === currentNoteId
-    }) || notes[0]
-  }
+
 
   return (
     <main>
@@ -102,17 +136,16 @@ export default function App() {
           >
             <Sidebar
               notes={notes}
-              currentNote={findCurrentNote()}
+              currentNote={currentNote}
               setCurrentNoteId={setCurrentNoteId}
               newNote={createNewNote}
               deleteNote={deleteNote}
             />
             {
-              currentNoteId &&
-              notes.length > 0 &&
+              tempNoteText &&
               <Editor
-                currentNote={findCurrentNote()}
-                updateNote={updateNote}
+                tempNoteText={tempNoteText}
+                updateNote={setTempNoteText}
               />
             }
           </Split>

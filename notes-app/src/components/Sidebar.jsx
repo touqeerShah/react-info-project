@@ -15,7 +15,7 @@ export default function Sidebar({ notes, currentNote, setCurrentNoteId, newNote,
                     id="al"
                     aria-label="delete-btn"
                     className="delete-btn"
-                    onClick={(e) => { deleteNote(e, note.id) }}
+                    onClick={() => { deleteNote( note.id) }}
 
                 >
                     <i className="gg-trash trash-icon"></i>

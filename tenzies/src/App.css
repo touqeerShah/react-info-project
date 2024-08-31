@@ -1,0 +1,21 @@
+.fullscreen-rounded-box {
+  background-color: rgba(255, 255, 255, 0.8); /* Light white color with some transparency */
+  border-radius: 15px; /* Rounded edges */
+  padding: 20px; /* Padding inside the div */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a lifted effect */
+  margin: 40px;
+  
+  /* Fullscreen properties */
+  width: calc(100% - 100px); /* Adjust width to account for margins */
+  height:calc(100% - 100px); /* Adjust width to account for margins */
+  position: fixed; /* Fixed position */
+  top: 0;
+  left: 0;
+
+  /* Centering content inside the div */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+
+  justify-content: center;
+  align-items: center;
+}
